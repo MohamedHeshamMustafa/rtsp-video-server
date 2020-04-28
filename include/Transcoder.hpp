@@ -6,7 +6,7 @@
 #include <string>
 #include <thread>
 
-#include "utils/Logger.hpp"
+#include <glog/logging.h>
 #include "utils/Utils.hpp"
 #include "config/params/Configuration.hpp"
 
@@ -18,7 +18,7 @@ extern "C" {
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
 #include <libavutil/pixdesc.h>
-#include <libavfilter/avfiltergraph.h>
+#include <libavfilter/avfilter.h>
 #include <libavfilter/buffersink.h>
 #include <libavfilter/buffersrc.h>
 }

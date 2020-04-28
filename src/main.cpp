@@ -1,6 +1,8 @@
 #include "LiveCameraRTSPServer.hpp"
 #include "config/ExtensionConfigLoaderFactory.hpp"
 #include <csignal>
+#include <cassert>
+#include <glog/logging.h>
 
 namespace {
     std::function<void(int)> shutdown_handler;
@@ -15,11 +17,12 @@ int main(int argc, char **argv) {
     assert(argc >= 2);
 
     std::signal(SIGTERM, signal_handler);
-    std::signal(SIGKILL, signal_handler);
+    //std::signal(SIGKILL, signal_handler);
     std::signal(SIGINT, signal_handler);
 
     // init loggers
-    initLogger(log4cpp::Priority::INFO);
+    FLAGS_log_dir = "logs/my_log";
+    google::InitGoogleLogging(argv[0]); 
 
     av_log_set_level(AV_LOG_INFO);
 

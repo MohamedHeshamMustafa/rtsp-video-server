@@ -20,7 +20,7 @@ namespace LIRS {
         assert(rawPixFormat != AV_PIX_FMT_NONE && encoderPixFormat != AV_PIX_FMT_NONE);
 
         //set framerate
-        frameRate = (AVRational) {static_cast<int>(config.getInputParams().getFrameRate().first), 1};
+        frameRate = {static_cast<int>(config.getInputParams().getFrameRate().first), 1};
 
         registerAll();
 
@@ -123,7 +123,7 @@ namespace LIRS {
 
     void Transcoder::registerAll() {
 
-        LOG(DEBUG) << "Registering ffmpeg stuff";
+        DLOG(INFO) << "Registering ffmpeg stuff";
 
         av_register_all();
 
@@ -139,7 +139,7 @@ namespace LIRS {
         // holds the general information about the format (container)
         decoderContext.formatContext = avformat_alloc_context();
 
-        LOG(DEBUG) << "Using Video4Linux2 API for decoding raw data";
+        DLOG(INFO) << "Using Video4Linux2 API for decoding raw data";
 
         AVInputFormat *inputFormat = av_find_input_format("v4l2"); // using Video4Linux API for capturing
 
@@ -191,7 +191,7 @@ namespace LIRS {
         rawPixFormat = decoderContext.codecContext->pix_fmt;
         sourceBitRate = static_cast<size_t>(decoderContext.codecContext->bit_rate);
 
-        LOG(DEBUG) << "Decoder params: width: " << frameWidth << ", height: " << frameHeight << ", pixel_fmt: "
+        DLOG(INFO) << "Decoder params: width: " << frameWidth << ", height: " << frameHeight << ", pixel_fmt: "
                    << av_get_pix_fmt_name(rawPixFormat) << ", framerate: " << frameRate.num;
 
         // allocate decoding packet
@@ -204,7 +204,7 @@ namespace LIRS {
 
     void Transcoder::initializeEncoder() {
 
-        LOG(DEBUG) << "Initialize HEVC encoder";
+        DLOG(INFO) << "Initialize HEVC encoder";
 
         // allocate format context for an output format (null - no output file)
         int statCode = avformat_alloc_output_context2(&encoderContext.formatContext, nullptr, "null", nullptr);
@@ -228,8 +228,8 @@ namespace LIRS {
 
         encoderContext.codecContext->profile = FF_PROFILE_HEVC_MAIN;
 
-        encoderContext.codecContext->time_base = (AVRational) {1, static_cast<int>(config.getOutputParams().getFrameRate().first)};
-        encoderContext.codecContext->framerate = (AVRational) {static_cast<int>(config.getOutputParams().getFrameRate().first), 1};
+        encoderContext.codecContext->time_base = {1, static_cast<int>(config.getOutputParams().getFrameRate().first)};
+        encoderContext.codecContext->framerate = {static_cast<int>(config.getOutputParams().getFrameRate().first), 1};
 
         // set encoder's pixel format (it is advised to use yuv420p)
         encoderContext.codecContext->pix_fmt = encoderPixFormat;
@@ -303,8 +303,8 @@ namespace LIRS {
         filterFrame = av_frame_alloc();
 
         // create buffer source and sink
-        AVFilter *bufferSrc = avfilter_get_by_name("buffer");
-        AVFilter *bufferSink = avfilter_get_by_name("buffersink");
+        const AVFilter *bufferSrc = avfilter_get_by_name("buffer");
+        const AVFilter *bufferSink = avfilter_get_by_name("buffersink");
 
         AVFilterInOut *outputs = avfilter_inout_alloc();
         AVFilterInOut *inputs = avfilter_inout_alloc();
@@ -445,7 +445,7 @@ namespace LIRS {
         decoderContext = {};
         encoderContext = {};
 
-        LOG(DEBUG) << "Cleanup transcoder!";
+        DLOG(INFO) << "Cleanup transcoder!";
     }
 
     void Transcoder::setOnEncodedDataCallback(std::function<void(std::vector<uint8_t> &&)> callback) {

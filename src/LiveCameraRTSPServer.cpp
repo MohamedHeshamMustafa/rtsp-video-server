@@ -7,7 +7,7 @@ namespace LIRS {
 
         OutPacketBuffer::maxSize = config.getMaxBufSize();
 
-        LOG(DEBUG) << "Setting OutPacketBuffer max size to " << OutPacketBuffer::maxSize << " (bytes)";
+        DLOG(INFO) << "Setting OutPacketBuffer max size to " << OutPacketBuffer::maxSize << " (bytes)";
 
         // create scheduler and environment
         scheduler = BasicTaskScheduler::createNew();
@@ -31,12 +31,12 @@ namespace LIRS {
         allocatedVideoSources.clear();
         watcher = 0;
 
-        LOG(DEBUG) << "RTSP server has been destructed!";
+        DLOG(INFO) << "RTSP server has been destructed!";
     }
 
     void LiveCameraRTSPServer::stopServer() {
 
-        LOG(DEBUG) << "Stop server is invoked!";
+        DLOG(INFO) << "Stop server is invoked!";
 
         watcher = 's';
     }
@@ -45,7 +45,7 @@ namespace LIRS {
 
         if (server) {
 
-            LOG(WARN) << "Server is already running!";
+            LOG(WARNING) << "Server is already running!";
 
             return; // already running
         }
@@ -58,7 +58,7 @@ namespace LIRS {
             exit(1);
         }
 
-        LOG(DEBUG) << "Server has been created on port " << config.getRtspPortNum();
+        DLOG(INFO) << "Server has been created on port " << config.getRtspPortNum();
 
         if (config.isHttpEnabled()) { // set up HTTP tunneling (see Live555 docs)
             auto res = server->setUpTunnelingOverHTTP(config.getHttpPortNum());
@@ -67,7 +67,7 @@ namespace LIRS {
             }
         }
 
-        LOG(DEBUG) << "Creating media session for each transcoder";
+        DLOG(INFO) << "Creating media session for each transcoder";
 
         // create media session for each video source (transcoder)
         for (auto &transcoder : transcoders) {
@@ -86,7 +86,7 @@ namespace LIRS {
     void LiveCameraRTSPServer::addMediaSession(std::shared_ptr<Transcoder> transcoder, const std::string &streamName,
                                                const std::string &streamDesc) {
 
-        LOG(DEBUG) << "Adding media session for camera: " << transcoder->getConfig().getName();
+        DLOG(INFO) << "Adding media session for camera: " << transcoder->getConfig().getName();
 
         // create framed source for camera
         auto framedSource = LiveCamFramedSource::createNew(*env, *transcoder);

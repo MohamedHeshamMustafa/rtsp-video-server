@@ -1,6 +1,6 @@
 #include "config/ExtensionConfigLoaderFactory.hpp"
 #include "config/YamlConfigLoader.hpp"
-#include "utils/Logger.hpp"
+#include <glog/logging.h>
 
 namespace lirs {
 

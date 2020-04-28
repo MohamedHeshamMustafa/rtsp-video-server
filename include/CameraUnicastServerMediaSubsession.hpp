@@ -6,7 +6,7 @@
 #include <H265VideoRTPSink.hh>
 #include <H265VideoStreamDiscreteFramer.hh>
 
-#include "utils/Logger.hpp"
+#include <glog/logging.h>
 #include "Config.hpp"
 
 namespace LIRS {

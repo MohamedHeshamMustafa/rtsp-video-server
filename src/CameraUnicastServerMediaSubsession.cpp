@@ -15,7 +15,7 @@ namespace LIRS {
             : OnDemandServerMediaSubsession(env, False), replicator(replicator), estBitrate(estBitrate),
               udpDatagramSize(udpDatagramSize) {
 
-        LOG(DEBUG) << "Unicast media subsession with UDP datagram size of " << udpDatagramSize
+        DLOG(INFO) << "Unicast media subsession with UDP datagram size of " << udpDatagramSize
                    << " and estimated bitrate of " << estBitrate << " (kbps) is created";
     }
 

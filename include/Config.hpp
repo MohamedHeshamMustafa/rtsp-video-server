@@ -2,8 +2,10 @@
 #define LIVE_VIDEO_STREAM_CONFIG_HPP
 
 #include <string>
-#include "utils/Logger.hpp"
+#include <iostream>
+#include <glog/logging.h>
 #include "Version.hpp"
+
 
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/option.hpp>
@@ -121,7 +123,7 @@ namespace LIRS {
                 exit(0);
             }
 
-            LOG(DEBUG) << "Configuration has been loaded!";
+            DLOG(INFO) << "Configuration has been loaded!";
 
             LOG(INFO) << "trial: " << trial_index << "\n\t"
                       << "origin_frame_width: " << origin_frame_width << "\n\t"

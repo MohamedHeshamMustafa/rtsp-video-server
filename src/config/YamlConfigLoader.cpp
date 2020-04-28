@@ -1,7 +1,7 @@
 #include <yaml-cpp/yaml.h>
 
 #include "config/YamlConfigLoader.hpp"
-#include "utils/Logger.hpp"
+#include <glog/logging.h>
 
 namespace lirs {
 
